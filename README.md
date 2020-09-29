@@ -45,7 +45,7 @@ export REPORTPORTAL_JUNIT_RESULTS_DIR_PATH="../../cypress/junitresults"
 | 4 | REPORTPORTAL_BASICAUTHKEY | Open to report Portal. Press F12. Go to Network. Select XHR. Login to Report Portal. Analyze 'Token' Call. You will find Authorization parameter. https://github.com/reportportal/reportportal/issues/1151 |
 | 5 | REPORTPORTAL_PROJECTNAME | Name of the Project |
 | 6 | REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME | 28 |
-| 1 | REPORTPORTAL_JUNIT_RESULTS_DIR_PATH | 28 |
+| 7 | REPORTPORTAL_JUNIT_RESULTS_DIR_PATH | 28 |
 
 
 
