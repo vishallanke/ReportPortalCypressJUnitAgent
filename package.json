@@ -1,0 +1,27 @@
+{
+  "name": "reportportalcypressjunitagent",
+  "version": "1.0.0",
+  "description": "Report Portal JUnit Cypress Agent",
+  "main": "index.js",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "reportportal",
+    "cypress",
+    "junit"
+  ],
+  "author": "Vishal Lanke",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "axios-retry": "^3.1.9",
+    "chai": "^4.2.0",
+    "form-data": "^3.0.0",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "xml2js": "^0.4.23",
+    "zip-folder": "^1.0.0"
+  }
+}
