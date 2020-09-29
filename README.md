@@ -44,8 +44,8 @@ export REPORTPORTAL_JUNIT_RESULTS_DIR_PATH="../../cypress/junitresults"
 | 3 | REPORTPORTAL_PASSWORD | Report Portal Password |
 | 4 | REPORTPORTAL_BASICAUTHKEY | Open to report Portal. Press F12. Go to Network. Select XHR. Login to Report Portal. Analyze 'Token' Call. You will find Authorization parameter. https://github.com/reportportal/reportportal/issues/1151 |
 | 5 | REPORTPORTAL_PROJECTNAME | Name of the Project |
-| 6 | REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME | 28 |
-| 7 | REPORTPORTAL_JUNIT_RESULTS_DIR_PATH | 28 |
+| 6 | REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME | JUnit XML files will be copied inside this Directory. This will be part of name of your Launch |
+| 7 | REPORTPORTAL_JUNIT_RESULTS_DIR_PATH | Perpend with ../../. Location where Cypress JUnit files will be stored |
 
 
 
