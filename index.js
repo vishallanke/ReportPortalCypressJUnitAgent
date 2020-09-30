@@ -11,7 +11,7 @@ var parser = new xml2js.Parser({ explicitArray: false });
 // Report Portal Configuration
 var FOLDER = process.env.REPORTPORTAL_JUNIT_RESULTS_DIR_PATH
 // Need to change this in Future
-const directoryPath = path.join(__dirname, "..", FOLDER );
+const directoryPath = path.join(__dirname, "..", FOLDER);
 var report_portal_host = `${process.env.REPORTPORTAL_APIURL}`
 var username = `${process.env.REPORTPORTAL_USERNAME}`
 var password = `${process.env.REPORTPORTAL_PASSWORD}`
@@ -126,38 +126,47 @@ function generateXml(fileNamesWithFullPath, done) {
               }
             }
 
-            try {
-              if (childSuiteRequired) {
-                json.testsuites = rootTestSuite
-                json.testsuites.testsuite = levelOneTestSuiteAsFeature
-                json.testsuites.testsuite.childtestsuite = []
-                for (var i = 0; i < testsuites.length; i++) {
-                  json.testsuites.testsuite.childtestsuite.push(testsuites[i])
-                }
-              } else {
-                json.testsuites = rootTestSuite
-                json.testsuites.testsuite = []
-                for (var i = 0; i < testsuites.length; i++) {
-                  json.testsuites.testsuite.push(testsuites[i])
-                }
+            // if updated xml does not contain test case, then delete the file
+            if (testsuites.length <= 0 || testsuites.length == undefined) {
+              console.log(`XML file does not contain testcase tag. Delete this file ${fullyQualifiedFilePath}`);
+              fs.unlinkSync(fullyQualifiedFilePath);
+              if (!--pending) {
+                console.log("Returning")
+                return done(null)
               }
+            } else {
+              try {
+                if (childSuiteRequired) {
+                  json.testsuites = rootTestSuite
+                  json.testsuites.testsuite = levelOneTestSuiteAsFeature
+                  json.testsuites.testsuite.childtestsuite = []
+                  for (var i = 0; i < testsuites.length; i++) {
+                    json.testsuites.testsuite.childtestsuite.push(testsuites[i])
+                  }
+                } else {
+                  json.testsuites = rootTestSuite
+                  json.testsuites.testsuite = []
+                  for (var i = 0; i < testsuites.length; i++) {
+                    json.testsuites.testsuite.push(testsuites[i])
+                  }
+                }
 
-
-              var builder = new xml2js.Builder();
-              var xml = builder.buildObject(json);
-              fs.writeFile(fullyQualifiedFilePath, xml, function (err, data) {
-                if (err) console.log(err);
-                console.log(`XML file successfully updated ${fullyQualifiedFilePath}`);
+                var builder = new xml2js.Builder();
+                var xml = builder.buildObject(json);
+                fs.writeFile(fullyQualifiedFilePath, xml, function (err, data) {
+                  if (err) console.log(err);
+                  console.log(`XML file successfully updated ${fullyQualifiedFilePath}`);
+                  if (!--pending) {
+                    console.log("Returning null from error")
+                    return done(null)
+                  }
+                });
+              } catch (err) {
+                console.log(`XML file updating error or file is already in correct format ${fullyQualifiedFilePath} ${err}`);
                 if (!--pending) {
-                  console.log("Returning null from error")
+                  console.log("Returning null")
                   return done(null)
                 }
-              });
-            } catch (err) {
-              console.log(`XML file updating error or file is already in correct format ${fullyQualifiedFilePath} ${err}`);
-              if (!--pending) {
-                console.log("Returning null")
-                return done(null)
               }
             }
 

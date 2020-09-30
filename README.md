@@ -7,6 +7,8 @@ Note - As it was for specific projects, I am modifying JUnit generated XML files
 Currently, JUnit geenrated XML files are not compatible with report portal.
 I am also making JUnit compatible with report portal
 
+https://github.com/reportportal/reportportal/issues/612
+
 
 Steps
 1. Cypress JUnit Configuration
