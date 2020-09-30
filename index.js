@@ -3,26 +3,20 @@ const FormData = require('form-data');
 var chai = require('chai');
 var expect = chai.expect;
 const RestClient = require('./restclient');
-
-// FILES
 var zipFolder = require('zip-folder');
-var FOLDER = process.env.REPORTPORTAL_JUNIT_RESULTS_DIR_PATH
-
-
 const path = require('path');
-var fs = require("fs"),
-  parseString = require("xml2js").parseString,
-  xml2js = require("xml2js");
+var fs = require("fs"), parseString = require("xml2js").parseString, xml2js = require("xml2js");
 var parser = new xml2js.Parser({ explicitArray: false });
-const directoryPath = path.join(__dirname, FOLDER);
 
-
-// REPORT PORTAL CONFIGURATION - Created for Testing - This data will be moved elsewhere
-var report_portal_host = `${process.env.REPORTPORTAL_APIURL}` //"http://ec2-52-66-255-103.ap-south-1.compute.amazonaws.com:8080"
-var username = `${process.env.REPORTPORTAL_USERNAME}`//"superadmin";
-var password = `${process.env.REPORTPORTAL_PASSWORD}`//"erebus";
-var basic_auth = `${process.env.REPORTPORTAL_BASICAUTHKEY}`//"Basic dWk6dWltYW4="
-var projectName = `${process.env.REPORTPORTAL_PROJECTNAME}`//"DEFAULT_PERSONAL"
+// Report Portal Configuration
+var FOLDER = process.env.REPORTPORTAL_JUNIT_RESULTS_DIR_PATH
+// Need to change this in Future
+const directoryPath = path.join(__dirname, "..", FOLDER );
+var report_portal_host = `${process.env.REPORTPORTAL_APIURL}`
+var username = `${process.env.REPORTPORTAL_USERNAME}`
+var password = `${process.env.REPORTPORTAL_PASSWORD}`
+var basic_auth = `${process.env.REPORTPORTAL_BASICAUTHKEY}`
+var projectName = `${process.env.REPORTPORTAL_PROJECTNAME}`
 var route_report_portal_connect = `${report_portal_host}/uat/sso/oauth/token?grant_type=password&username=${username}&password=${password}`
 var endpoint = `${report_portal_host}/api/v1`
 let headers = {
@@ -31,17 +25,9 @@ let headers = {
 }
 var importEndpoint = `${endpoint}/${projectName}/launch/import`;
 
-getCurrentFilenames(function (done) {
-  filewalker(directoryPath, function (err, data, allDirectories) {
-    if (err) {
-      throw err;
-    }
-
-    generateXml(data, function (err1) {
-      if (err1) {
-        throw err1;
-      }
-
+getCurrentFilenames(function (getfilenameserror) {
+  filebrowser(directoryPath, function (filebrowsererror, data, allDirectories) {
+    generateXml(data, function (err) {
       zipDirectory(allDirectories, function (zipListOfDirectories) {
         console.log(`number of directories to be zipped ${zipListOfDirectories.length}`)
         connectToReportPortalWithoutClient(zipListOfDirectories)
@@ -51,7 +37,8 @@ getCurrentFilenames(function (done) {
 });
 
 
-function filewalker(dir, done) {
+function filebrowser(dir, done) {
+  console.log(`Inside filebrowser`)
   let results = [];
   let allDirectories = [];
 
@@ -74,7 +61,7 @@ function filewalker(dir, done) {
 
           // console.log(`file=> ${file}`);
 
-          filewalker(file, function (err, res) {
+          filebrowser(file, function (err, res) {
             results = results.concat(res);
             if (!--pending) done(null, results, allDirectories);
           });
@@ -88,14 +75,18 @@ function filewalker(dir, done) {
   });
 };
 
+/*
+Convert JUniXML Files into Report Portal Compatible Format
+*/
+
 function generateXml(fileNamesWithFullPath, done) {
-  console.log(`data length ${fileNamesWithFullPath.length}`)
+  console.log(`Inside generateXml. Number of files ${fileNamesWithFullPath.length}`)
   var pending = fileNamesWithFullPath.length;
 
   //listing all files using forEach
   fileNamesWithFullPath.forEach(function (fullyQualifiedFilePath) {
     if (!pending) {
-      console.log("returning null at start")
+      console.log("Returning null at start")
       return done(null);
     }
     pending = fileNamesWithFullPath.length;
@@ -118,10 +109,9 @@ function generateXml(fileNamesWithFullPath, done) {
 
           if (json.testsuites.testsuite.length > 1) {
             if (json.testsuites.testsuite[1].testcase != undefined && (json.testsuites.testsuite[1].testcase.length > 0 || json.testsuites.testsuite[1].testcase.length == undefined)) {
-              // TODO - Future
               childSuiteRequired = false;
             } else {
-              console.log(`childSuiteRequired is true`)
+              console.log(`Setting ChildSuiteRequired is true`)
               childSuiteRequired = true;
               levelOneTestSuiteAsFeature = json.testsuites.testsuite[1]
             }
@@ -137,9 +127,6 @@ function generateXml(fileNamesWithFullPath, done) {
             }
 
             try {
-              // console.log(rootTestSuite)
-              //  console.log(levelOneTestSuiteAsFeature)
-
               if (childSuiteRequired) {
                 json.testsuites = rootTestSuite
                 json.testsuites.testsuite = levelOneTestSuiteAsFeature
@@ -199,32 +186,27 @@ function generateXml(fileNamesWithFullPath, done) {
                                }
            */
 
-
-
-          } else{
+          } else {
             if (!--pending) {
               return done(null)
             }
           }
-
-
-
         });
       } catch (err) {
         console.log(err)
       }
 
     });
-
-
-
   });
 
 
 }
 
+/*
+  ZIP Directory having JUnit XML Files
+*/
 function zipDirectory(directoryList, done) {
-  console.log(`directoryList length ${directoryList.length}`)
+  console.log(`Inside zipDirectory. length ${directoryList.length}`)
   var zipFiles = []
   var pending = directoryList.length;
 
@@ -247,12 +229,12 @@ function zipDirectory(directoryList, done) {
         if (!--pending) return done(zipFiles);
       }
     });
-
-
   })
-
 }
 
+/*
+  Connect to report portal using Rest Client
+*/
 function connectToReportPortal(zipListOfDirectories) {
   RestClient.request('POST', route_report_portal_connect, {}, { headers: headers }).then(response => {
     var token = response.access_token
@@ -272,8 +254,11 @@ function connectToReportPortal(zipListOfDirectories) {
   })
 }
 
+/*
+  Connect to report portal using Axios
+*/
 function connectToReportPortalWithoutClient(zipListOfDirectories) {
-  console.log(`connectToReportPortalWithoutClient`)
+  console.log(`Inside connectToReportPortalWithoutClient`)
   axios.post(route_report_portal_connect, {}, {
     headers: headers
   }).then(res => {
@@ -310,11 +295,12 @@ Read Dire Name as Vertical Name
   Move All files to Directory
 */
 function getCurrentFilenames(done) {
+  console.log(`Inside getCurrentFilenames`)
+
   // Read folder from env variable and create directory
   var JUNIT_APPLICATION_DIRECTORY_NAME = process.env.REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME;
   const updatedAppDirectory = path.join(directoryPath, JUNIT_APPLICATION_DIRECTORY_NAME);
   !fs.existsSync(updatedAppDirectory) && fs.mkdirSync(updatedAppDirectory);
-  console.log(`Directory Created`)
 
   fs.readdir(directoryPath, (err, list) => {
     var pending = list.length;
