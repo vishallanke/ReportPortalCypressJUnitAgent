@@ -33,13 +33,13 @@ Steps
 
 2. Set below Environment Variables inside CI/CD
 ```
-export REPORTPORTAL_APIURL="http://ec2-14-222-29-254.ap-south-1.compute.amazonaws.com:8080"
+export REPORTPORTAL_APIURL="http://ec2-25-467-123-124.ap-south-1.compute.amazonaws.com:8080"
 export REPORTPORTAL_USERNAME="superadmin"
 export REPORTPORTAL_PASSWORD="erebus"
-export REPORTPORTAL_BASICAUTHKEY="Basic dAk7dWltYW5="
+export REPORTPORTAL_BASICAUTHKEY="Basic bAk7dWltYW5="
 export REPORTPORTAL_PROJECTNAME="DEFAULT_PERSONAL"
-export REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME="Launch"
-export REPORTPORTAL_JUNIT_RESULTS_DIR_PATH="../../../../cypress/junitresults"
+export REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME="DeviceComponent"
+export REPORTPORTAL_JUNIT_RESULTS_DIR_PATH="../../cypress/junitresults"
 ```
 | Sr. | Variable | Comments |
 | --- | --- | --- |

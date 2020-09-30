@@ -3,7 +3,10 @@
   "version": "1.0.1",
   "description": "Report Portal JUnit Cypress Agent",
   "main": "index.js",
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "publishConfig": {
+    "access": "public",
+    "registry":"https://registry.npmjs.org"
+   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
