@@ -5,8 +5,8 @@
   "main": "index.js",
   "publishConfig": {
     "access": "public",
-    "registry":"https://registry.npmjs.org"
-   },
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
