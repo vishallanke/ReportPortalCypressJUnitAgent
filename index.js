@@ -109,9 +109,10 @@ function generateXml(fileNamesWithFullPath, done) {
 
           if (json.testsuites.testsuite.length > 1) {
             if (json.testsuites.testsuite[1].testcase != undefined && (json.testsuites.testsuite[1].testcase.length > 0 || json.testsuites.testsuite[1].testcase.length == undefined)) {
+              console.log(`ChildSuiteRequired is false`)
               childSuiteRequired = false;
             } else {
-              console.log(`Setting ChildSuiteRequired is true`)
+              console.log(`ChildSuiteRequired is true`)
               childSuiteRequired = true;
               levelOneTestSuiteAsFeature = json.testsuites.testsuite[1]
             }
@@ -131,7 +132,6 @@ function generateXml(fileNamesWithFullPath, done) {
               console.log(`XML file does not contain testcase tag. Delete this file ${fullyQualifiedFilePath}`);
               fs.unlinkSync(fullyQualifiedFilePath);
               if (!--pending) {
-                console.log("Returning")
                 return done(null)
               }
             } else {
@@ -157,14 +157,14 @@ function generateXml(fileNamesWithFullPath, done) {
                   if (err) console.log(err);
                   console.log(`XML file successfully updated ${fullyQualifiedFilePath}`);
                   if (!--pending) {
-                    console.log("Returning null from error")
+                    console.log(`Returning from writeFile ${fullyQualifiedFilePath}`)
                     return done(null)
                   }
                 });
               } catch (err) {
                 console.log(`XML file updating error or file is already in correct format ${fullyQualifiedFilePath} ${err}`);
                 if (!--pending) {
-                  console.log("Returning null")
+                  console.log(`Returning from writeFile error ${fullyQualifiedFilePath}`)
                   return done(null)
                 }
               }
@@ -229,12 +229,11 @@ function zipDirectory(directoryList, done) {
 
     zipFolder(directoryNameWithPath, directoryZipPath, function (err) {
       if (err) {
-        console.log(`ERROR! ${directoryZipPath}`)
+        console.log(`Error from zipFolder ${directoryZipPath}`)
         if (!--pending) return done(zipFiles);
       } else {
         console.log(`ZIP Generated ${directoryZipPath}`)
         zipFiles.push(directoryZipPath)
-        // connectToReportPortal(directoryZipPath)
         if (!--pending) return done(zipFiles);
       }
     });
