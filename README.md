@@ -1,13 +1,20 @@
-# ReportPortal Cypress JUnit Agent
+# [WIP] ReportPortal Cypress JUnit Agent
 
 ***WORK-IN-PROGRESS***
 
+## Current Limitations
+
+- Pending and Skipped tets cases won't get updated to report portal
+- Attachments are not visible
+- `cy.log` or `console.log` not visible. Failure logs will be visible.
+
 This Agent is created to satisfy requirements in our projects. JUnit reporting is configured on Cypress. Once Cypress tests gets executed, JUnit generates XML files containing test execution results. This agent will import those tests to report portal.
 Note - As it was for specific projects, I am modifying JUnit generated XML files so that Feature ID can be visible inside Launches.
-Currently, JUnit geenrated XML files are not compatible with report portal.
+Currently, JUnit generated XML files are not compatible with report portal.
 I am also making JUnit compatible with report portal
 
-https://github.com/reportportal/reportportal/issues/612
+- https://github.com/cypress-io/cypress/issues/4245
+- https://github.com/reportportal/reportportal/issues/612
 
 
 Steps
@@ -74,7 +81,3 @@ How to decide value of `REPORTPORTAL_JUNIT_RESULTS_DIR_PATH` ?
 3. `npm install reportportalcypressjunitagent`
 
 4. Execute `node ./node_modules/@vishallanke/reportportalcypressjunitagent/index.js`
-
-## Current Limitations
-
-- Pending and Skipped tets cases won't get updated to report portal
