@@ -30,7 +30,7 @@ getCurrentFilenames(function (getfilenameserror) {
     generateXml(data, function (err) {
       zipDirectory(allDirectories, function (zipListOfDirectories) {
         console.log(`number of directories to be zipped ${zipListOfDirectories.length}`)
-        connectToReportPortalWithoutClient(zipListOfDirectories)
+        connectToReportPortal(zipListOfDirectories)
       });
     });
   });
@@ -244,6 +244,8 @@ function zipDirectory(directoryList, done) {
   Connect to report portal using Rest Client
 */
 function connectToReportPortal(zipListOfDirectories) {
+  console.log(`Inside connectToReportPortal`)
+
   RestClient.request('POST', route_report_portal_connect, {}, { headers: headers }).then(response => {
     var token = response.access_token
 
