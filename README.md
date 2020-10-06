@@ -2,7 +2,7 @@
 
 ***WORK-IN-PROGRESS***
 
-## Current Limitations
+## [WIP] Current Limitations
 
 - Pending and Skipped tets cases won't get updated to report portal
 - Attachments are not visible
@@ -13,6 +13,7 @@ Note - As it was for specific projects, I am modifying JUnit generated XML files
 Currently, JUnit generated XML files are not compatible with report portal.
 I am also making JUnit compatible with report portal
 
+* Reference of Defects
 - https://github.com/cypress-io/cypress/issues/4245
 - https://github.com/reportportal/reportportal/issues/612
 
