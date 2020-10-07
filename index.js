@@ -1,3 +1,6 @@
+/*
+  Work In Progress
+*/
 const axios = require('axios');
 const FormData = require('form-data');
 var chai = require('chai');
@@ -25,6 +28,7 @@ let headers = {
 }
 var importEndpoint = `${endpoint}/${projectName}/launch/import`;
 
+// TODO - Error Handling
 getCurrentFilenames(function (getfilenameserror) {
   filebrowser(directoryPath, function (filebrowsererror, data, allDirectories) {
     generateXml(data, function (err) {
@@ -58,8 +62,6 @@ function filebrowser(dir, done) {
           // Add directory to array [comment if you need to remove the directories from the array]
           //results.push(file);
           allDirectories.push(file);
-
-          // console.log(`file=> ${file}`);
 
           filebrowser(file, function (err, res) {
             results = results.concat(res);
@@ -300,7 +302,7 @@ function connectToReportPortalWithoutClient(zipListOfDirectories) {
 }
 
 /*
-Read Dire Name as Vertical Name
+Read Dir Name as Vertical Name
   Create Directory - Fetch Name from Env Variable
   Move All files to Directory
 */

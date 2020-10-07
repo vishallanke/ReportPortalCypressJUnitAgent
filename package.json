@@ -1,6 +1,6 @@
 {
   "name": "@vishallanke/reportportalcypressjunitagent",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Report Portal JUnit Cypress Agent",
   "main": "index.js",
   "publishConfig": {
@@ -13,7 +13,9 @@
   "keywords": [
     "reportportal",
     "cypress",
-    "junit"
+    "junit",
+    "reportportalagent",
+    "reportportalcypressagent"
   ],
   "author": "Vishal",
   "license": "ISC",

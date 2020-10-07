@@ -2,20 +2,20 @@
 
 ***WORK-IN-PROGRESS***
 
-## [WIP] Current Limitations
+## [WIP] Planned
 
-- Pending and Skipped tets cases won't get updated to report portal
-- Attachments are not visible
-- `cy.log` or `console.log` not visible. Failure logs will be visible.
+[Work In Progress]
+Send below details to report portal -
+- Update Pending and Skipped tets cases
+- Show Attachments
+- Show `cy.log` or `console.log`
 
-This Agent is created to satisfy requirements in our projects. JUnit reporting is configured on Cypress. Once Cypress tests gets executed, JUnit generates XML files containing test execution results. This agent will import those tests to report portal.
-Note - As it was for specific projects, I am modifying JUnit generated XML files so that Feature ID can be visible inside Launches.
-Currently, JUnit generated XML files are not compatible with report portal.
-I am also making JUnit compatible with report portal
+Currently, JUnit generated XML files are not compatible with report portal. Once Cypress tests gets executed, JUnit generates XML files containing test execution results. This agent will make JUnit XML files compatible to report portal and send them to report portal
 
 * Reference of Defects
 - https://github.com/cypress-io/cypress/issues/4245
 - https://github.com/reportportal/reportportal/issues/612
+- https://github.com/cypress-io/cypress/issues/3199
 
 
 Steps
