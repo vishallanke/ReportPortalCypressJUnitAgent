@@ -103,11 +103,14 @@ function generateXml(fileNamesWithFullPath, done) {
           // save our json to a variable
           var json = result;
 
-          //console.log((json.testsuites.testsuite.length));
+
           var testsuites = [];
           var rootTestSuite;
           var levelOneTestSuiteAsFeature;
           rootTestSuite = json.testsuites.testsuite[0]
+
+         //console.log(JSON.stringify(rootTestSuite));
+
           var childSuiteRequired = false;
 
           if (json.testsuites.testsuite.length > 1) {
@@ -154,8 +157,24 @@ function generateXml(fileNamesWithFullPath, done) {
                   }
                 }
 
-                var builder = new xml2js.Builder();
-                var xml = builder.buildObject(json);
+                // To make service specific Launches
+                /*
+                Name of Launch
+                ------ Apps => Generated due to belwo line of code
+                      ----- Feature
+                            -----  Test Cases
+                */
+               var xml;
+                try{
+                  var obj = {testsuite: {$: {name: process.env.REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME}, json}};
+                  var builder = new xml2js.Builder();
+                 xml = builder.buildObject(obj);
+                } catch(err){
+                  console.log(err)
+                }
+
+                // var builder = new xml2js.Builder();
+                // var xml = builder.buildObject(json);
                 fs.writeFile(fullyQualifiedFilePath, xml, function (err, data) {
                   if (err) console.log(err);
                   console.log(`XML file successfully updated ${fullyQualifiedFilePath}`);
