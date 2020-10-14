@@ -13,13 +13,14 @@ var parser = new xml2js.Parser({ explicitArray: false });
 
 // Report Portal Configuration
 var FOLDER = process.env.REPORTPORTAL_JUNIT_RESULTS_DIR_PATH
-// Need to change this in Future
+// Need to change this in Future. Credentials will be removed in Future
 const directoryPath = path.join(__dirname, "..", FOLDER);
 var report_portal_host = `${process.env.REPORTPORTAL_APIURL}`
+var projectName = `${process.env.REPORTPORTAL_PROJECTNAME}`
+var projectSpecificAPIToken = `${process.env.REPORTPORTAL_API_TOKEN}`
 var username = `${process.env.REPORTPORTAL_USERNAME}`
 var password = `${process.env.REPORTPORTAL_PASSWORD}`
 var basic_auth = `${process.env.REPORTPORTAL_BASICAUTHKEY}`
-var projectName = `${process.env.REPORTPORTAL_PROJECTNAME}`
 var route_report_portal_connect = `${report_portal_host}/uat/sso/oauth/token?grant_type=password&username=${username}&password=${password}`
 var endpoint = `${report_portal_host}/api/v1`
 let headers = {
@@ -34,7 +35,7 @@ getCurrentFilenames(function (getfilenameserror) {
     generateXml(data, function (err) {
       zipDirectory(allDirectories, function (zipListOfDirectories) {
         console.log(`number of directories to be zipped ${zipListOfDirectories.length}`)
-        connectToReportPortal(zipListOfDirectories)
+        connectToReportPortalWithApiToken(zipListOfDirectories)
       });
     });
   });
@@ -240,6 +241,24 @@ function zipDirectory(directoryList, done) {
       }
     });
   })
+}
+
+/*
+  Connect to report portal using Rest Client
+*/
+function connectToReportPortalWithApiToken(zipListOfDirectories) {
+  console.log(`Inside connectToReportPortalWithApiToken`)
+    zipListOfDirectories.forEach(function (directoryZipPath, done) {
+      const formData = new FormData();
+      formData.append('file', fs.createReadStream(directoryZipPath));
+      let importHeader = formData.getHeaders()
+      importHeader['Accept'] = 'application/json'
+      importHeader['Authorization'] = `bearer ${projectSpecificAPIToken}`
+      RestClient.request('POST', importEndpoint, formData, { headers: importHeader }).then(response => {
+        console.log(response.message)
+      })
+    })
+
 }
 
 /*
