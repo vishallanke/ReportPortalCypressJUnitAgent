@@ -1,6 +1,6 @@
 {
   "name": "@vishallanke/reportportalcypressjunitagent",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Report Portal JUnit Cypress Agent",
   "main": "index.js",
   "publishConfig": {

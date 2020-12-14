@@ -103,7 +103,8 @@ function generateXml(fileNamesWithFullPath, done) {
           // save our json to a variable
           var json = result;
 
-
+          if(json.testsuites != null || json.testsuites != undefined)
+          {
           var testsuites = [];
           var rootTestSuite;
           var levelOneTestSuiteAsFeature;
@@ -113,6 +114,7 @@ function generateXml(fileNamesWithFullPath, done) {
 
           var childSuiteRequired = false;
 
+          // Fox for TestCafe where testSuites does not exists
           if (json.testsuites.testsuite.length > 1) {
             if (json.testsuites.testsuite[1].testcase != undefined && (json.testsuites.testsuite[1].testcase.length > 0 || json.testsuites.testsuite[1].testcase.length == undefined)) {
               console.log(`ChildSuiteRequired is false`)
@@ -222,6 +224,12 @@ function generateXml(fileNamesWithFullPath, done) {
               return done(null)
             }
           }
+        }
+        else{
+          if (!--pending) {
+            return done(null)
+          }
+        }
         });
       } catch (err) {
         console.log(err)

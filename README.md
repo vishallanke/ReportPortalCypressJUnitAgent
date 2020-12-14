@@ -76,7 +76,7 @@ How to decide value of `REPORTPORTAL_JUNIT_RESULTS_DIR_PATH` ?
 - Consider `reportportalcypressjunitagent` as starting point. `../` will navigate you to `node_modules`. Again `../` will navigate you to `cypress` directory
 >>>
 
-3. `npm install reportportalcypressjunitagent` to install reportportalcypressjunitagent. If you are using yarn, then you can use `yarn add @vishallanke/reportportalcypressjunitagentypressjunitagent`
+3. `npm i @vishallanke/reportportalcypressjunitagent` to install reportportalcypressjunitagent. If you are using yarn, then you can use `yarn add @vishallanke/reportportalcypressjunitagentypressjunitagent`
 
 4. Execute cypress test cases in background using run command. For example, ` ./node_modules/.bin/cypress run --env configFile=$TEST_ENV --headless --browser chrome`
 
