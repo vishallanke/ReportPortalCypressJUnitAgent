@@ -136,6 +136,7 @@ function generateXml(fileNamesWithFullPath, done) {
             }
 
             // if updated xml does not contain test case, then delete the file
+            console.log(`testsuites.length is ${testsuites.length}`)
             if (testsuites.length <= 0 || testsuites.length == undefined) {
               console.log(`XML file does not contain testcase tag. Delete this file ${fullyQualifiedFilePath}`);
               fs.unlinkSync(fullyQualifiedFilePath);
@@ -167,12 +168,22 @@ function generateXml(fileNamesWithFullPath, done) {
                             -----  Test Cases
                 */
                var xml;
+               console.log(`XML is ${xml}`)
                 try{
                   var obj = {testsuite: {$: {name: process.env.REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME}, json}};
                   var builder = new xml2js.Builder();
                  xml = builder.buildObject(obj);
                 } catch(err){
                   console.log(err)
+                }
+
+                // Change for Test Suite throwing RangeError: Maximum call stack size exceeded because they are already compatible
+                if(xml == null || xml == undefined)
+                {
+                  if (!--pending) {
+                    console.log(`Returning from writeFile ${fullyQualifiedFilePath}`)
+                    return done(null)
+                  }
                 }
 
                 // var builder = new xml2js.Builder();
