@@ -1,6 +1,5 @@
-# [WIP] ReportPortal Cypress JUnit Agent
+# ReportPortal Cypress JUnit Agent
 
-***WORK-IN-PROGRESS***
 
 ## [WIP] Planned
 
@@ -43,10 +42,10 @@ Steps
 
 2. Set below Environment Variables inside CI/CD
 ```
-export REPORTPORTAL_APIURL="http://ec2-32-234-123.south-1.compute.amazonaws.com:8080"
+export REPORTPORTAL_APIURL="http://ec2-32-234-124.south-1.compute.amazonaws.com:8080"
 export REPORTPORTAL_PROJECTNAME="DEFAULT_PERSONAL"
 export REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME="NameOfLaunch"
-export REPORTPORTAL_JUNIT_RESULTS_DIR_PATH="../../cypress/junitresults"
+export REPORTPORTAL_JUNIT_RESULTS_DIR_PATH="../cypress/junitresults"
 export REPORTPORTAL_API_TOKEN="xxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
 ```
@@ -55,31 +54,32 @@ export REPORTPORTAL_API_TOKEN="xxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 | --- | --- | --- |
 | 1 | REPORTPORTAL_APIURL | Report Portal API Endpoint |
 | 2 | REPORTPORTAL_PROJECTNAME | Name of the Project |
-| 3 | REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME | JUnit XML files will be copied inside this Directory. Name of the Launch will start with this. |
+| 3 | REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME | JUnit XML files will be copied inside this Directory. Name of the Launch will start with this. This can be your test project name|
 | 4 | REPORTPORTAL_API_TOKEN | API Token for Report Portal. |
-| 5 | REPORTPORTAL_JUNIT_RESULTS_DIR_PATH | Location where Cypress JUnit files will be stored. We assume that it is inside `Cypress/junitresults` directory. Then, please provide value of this as `../../cypress/junitresults` |
+| 5 | REPORTPORTAL_JUNIT_RESULTS_DIR_PATH | Location where Cypress JUnit files will be stored. We assume that it is inside `Cypress/junitresults` directory. Then, please provide value of this as `../cypress/junitresults` |
 
 >>>
 How to decide value of `REPORTPORTAL_JUNIT_RESULTS_DIR_PATH` ?
-* Value will be `../../cypress/junitresults`  for below project hierarchy
+* Value will be `../cypress/junitresults`  for below project hierarchy
 ```
 - project
   - cypress
     - junitresults
       - *.xml files
-  - node_modules
-    - @vishallanke
-      - reportportalcypressjunitagent
-        - index.js
+  - node_modules => Starting Point to navigate to junit directory
+    - reportportalcypressjunitagent
+      - index.js
 ```
+
+`junitresults` contains all the XML files
 
 - Consider `reportportalcypressjunitagent` as starting point. `../` will navigate you to `node_modules`. Again `../` will navigate you to `cypress` directory
 >>>
 
-3. `npm i @vishallanke/reportportalcypressjunitagent` to install reportportalcypressjunitagent. If you are using yarn, then you can use `yarn add @vishallanke/reportportalcypressjunitagentypressjunitagent`
+3. `npm i reportportalcypressjunitagent` to install reportportalcypressjunitagent. If you are using yarn, then you can use `yarn add reportportalcypressjunitagentypressjunitagent`
 
 4. Execute cypress test cases in background using run command. For example, ` ./node_modules/.bin/cypress run --env configFile=$TEST_ENV --headless --browser chrome`
 
-4. Execute `node ./node_modules/@vishallanke/reportportalcypressjunitagent/index.js`
+4. Execute `node ./node_modules/reportportalcypressjunitagent/index.js`
 
-Alternatively, you can also create `reportportal.js` file on root and add `require ("@vishallanke/reportportalcypressjunitagent/")` in this file. In this case, you need to execute `node reportportal.js` command
+Alternatively, you can also create `reportportal.js` file on root and add `require ("reportportalcypressjunitagent")` in this file. In this case, you need to execute `node reportportal.js` command
