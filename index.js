@@ -244,6 +244,9 @@ function generateXml(fileNamesWithFullPath, done) {
         });
       } catch (err) {
         console.log(err)
+        if (!--pending) {
+          return done(null)
+        }
       }
 
     });
