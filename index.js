@@ -532,7 +532,7 @@ async function deepMergeFromId() {
     "launches": idArray,
     "mergeType": "DEEP",
     "mode": "DEFAULT",
-    "name": deepMergeName,
+    "name": deepMergeName + "_" + new Date().toISOString().replace(/:/g, '-'),
     "startTime": startDate
   }
   RestClient.request('POST', mergeEndpoint, postPayload, { headers: { 'Authorization': `bearer ${projectSpecificAPIToken}`, 'Accept': 'application/json' } }).then(response => {
