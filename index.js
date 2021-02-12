@@ -417,7 +417,7 @@ function getCurrentFilenames(done) {
 /*
 Read UUIDs from File
 Get id from uuid
-GET - https://ta-reporting.bt.siemens.com/api/v1/HORIZON/launch/uuid/185cb54f-ef59-4362-ab82-479001975ce9
+GET - /api/v1/HORIZON/launch/uuid/185cb54f-ef59-4362-ab82-479001975ce9
     200
     {
       "rerun": false,
@@ -484,7 +484,7 @@ function readUUID() {
   Perform Deep Merge for all the Launches
   By default, deep merge and it would be true
   call REST API
-  POST  - /v1/{projectName}/launch/merge | https://ta-reporting.bt.siemens.com/api/v1/HORIZON/launch/merge
+  POST  - /v1/{projectName}/launch/merge
 
   {
   "attributes": [
