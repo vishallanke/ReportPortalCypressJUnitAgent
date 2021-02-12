@@ -34,12 +34,10 @@ var mergeEndpoint = `${endpoint}/${projectName}/launch/merge`;
 var deepMerge = `${process.env.REPORTPORTAL_DEEPMERGE}`
 var getIdFromuUIDEndpoint = `${endpoint}/${projectName}/launch/uuid`;
 
-
-getCurrentFilenames(function (getfilenameserror) {
-  /* Deep Merge */
-  if (deepMerge == 'true') {
-    deepMergeFromId();
-  } else {
+if (deepMerge == 'true') {
+  deepMergeFromId();
+} else {
+  getCurrentFilenames(function (getfilenameserror) {
     filebrowser(directoryPath, function (filebrowsererror, data, allDirectories) {
       generateXml(data, function (err) {
         zipDirectory(allDirectories, function (zipListOfDirectories) {
@@ -48,8 +46,8 @@ getCurrentFilenames(function (getfilenameserror) {
         });
       });
     });
-  }
-});
+  });
+}
 
 
 function filebrowser(dir, done) {
