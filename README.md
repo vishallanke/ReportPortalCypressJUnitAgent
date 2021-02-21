@@ -42,14 +42,15 @@ Steps
 
 2. Set below Environment Variables inside CI/CD
 ```
-export REPORTPORTAL_APIURL="http://ec2-32-234-124.south-1.compute.amazonaws.com:8080"
-export REPORTPORTAL_PROJECTNAME="DEFAULT_PERSONAL"
-export REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME="NameOfLaunch"
+export REPORTPORTAL_APIURL="https://report-portal-demo.com:443"
+export REPORTPORTAL_PROJECTNAME="DEMO"
+export REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME="MyProject"
 export REPORTPORTAL_JUNIT_RESULTS_DIR_PATH="../cypress/junitresults"
-export REPORTPORTAL_API_TOKEN="xxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-export REPORTPORTAL_DEEPMERGE_NAME="Nightly_Int"
-export REPORTPORTAL_DEEPMERGE_ATTRIBUTES="Nightly_Int"
-export REPORTPORTAL_DEEPMERGE="false"
+export REPORTPORTAL_API_TOKEN="d04b49b4-76c0-472e-b89b-aa2398619fd7"
+export REPORTPORTAL_DEEPMERGE_NAME="MyProject"
+export REPORTPORTAL_DEEPMERGE_ATTRIBUTES="Environment#INT#Schedule#Nightly#Vertical#MyVertical#Project#E2ECrossVerticalQA"
+export REPORTPORTAL_DEEPMERGE="false
+EXPORT REPORTPORTAL_DEEPMERGE_DESCRIPTION="MyProject INT"
 
 ```
 
@@ -61,9 +62,8 @@ export REPORTPORTAL_DEEPMERGE="false"
 | 4 | REPORTPORTAL_API_TOKEN | API Token for Report Portal. |
 | 5 | REPORTPORTAL_JUNIT_RESULTS_DIR_PATH | Location where Cypress JUnit files will be stored. We assume that it is inside `Cypress/junitresults` directory. Then, please provide value of this as `../cypress/junitresults` |
 | 6 | REPORTPORTAL_DEEPMERGE_NAME | Report Portal Name of the Deep Merge |
-| 7 | REPORTPORTAL_DEEPMERGE_ATTRIBUTES | Specify attribute for Deep Merge. Key is RELEASE. You can specify Attribute for this key |
+| 7 | REPORTPORTAL_DEEPMERGE_ATTRIBUTES | Specify attribute for Deep Merge. It has to be hash seperated. For example, Environment#INT#Schedule#Nightly#Vertical#AccountManager#Project#E2ECrossVerticalQA |
 | 8 | REPORTPORTAL_DEEPMERGE | Set value to true to perform deep merge |
-
 
 
 >>>
