@@ -516,7 +516,8 @@ async function deepMergeFromId() {
   console.log(`After Reading ID ${idArray[0]}`)
 
   var deepMergeName = `${process.env.REPORTPORTAL_DEEPMERGE_NAME}`
-  // Sedn Hash sepertaed Key#Value Pairs `PLATFORM#INT#REELASE#NOV#VERTICAL#SITE`
+  var deepMergeDesc = `${process.env.REPORTPORTAL_DEEPMERGE_DESCRIPTION}`
+  // Send Hash separated Key#Value Pairs `PLATFORM#INT#REELASE#NOV#VERTICAL#SITE`
   var deepMergeAttribute = `${process.env.REPORTPORTAL_DEEPMERGE_ATTRIBUTES}`
   var attributes = []
   const arrayOfStrings = deepMergeAttribute.split('#')
@@ -526,7 +527,6 @@ async function deepMergeFromId() {
         "key": arrayOfStrings[i],
         "value": arrayOfStrings[++i],
       }
-
       attributes.push(dict);
     }
   }
@@ -535,7 +535,7 @@ async function deepMergeFromId() {
   var endDate = new Date().toISOString()
   var postPayload = {
     "attributes": attributes,
-    "description": deepMergeName,
+    "description": deepMergeDesc,
     "endTime": endDate,
     "extendSuitesDescription": true,
     "launches": idArray,
