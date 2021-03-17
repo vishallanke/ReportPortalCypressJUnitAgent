@@ -1,7 +1,7 @@
 const axios = require('axios');
 const axiosRetry = require('axios-retry');
 
-axiosRetry(axios, { retryDelay: () => 100, retries: 10, retryCondition: axiosRetry.isRetryableError });
+axiosRetry(axios, { retryDelay: () => 20, retries: 3, retryCondition: axiosRetry.isRetryableError });
 
 class RestClient {
     constructor(options) {
@@ -24,11 +24,12 @@ class RestClient {
         console.log(data)
         console.log("******************************************************")
 
+        // Sometimes, its observed that Import operation takes time. So setting timeout to 60 seconds
         return axios({
             method,
             url,
             headers: options.headers,
-            data,
+            data, timeout: 120000
         })
             .then(response => response.data)
             .catch((error) => {
