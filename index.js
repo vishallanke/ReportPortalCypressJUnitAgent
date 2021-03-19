@@ -273,7 +273,7 @@ function zipDirectory(directoryList, done) {
     if (!pending) return done(zipFiles);
     pending = directoryList.length;
 
-    var lastDirectoryName = `${path.basename(directoryNameWithPath, '.js')}` + "_" + new Date().toISOString().replace(/:/g, '-') + ".zip";
+   var lastDirectoryName = `${path.basename(directoryNameWithPath, '.js')}` + "_" + new Date().toISOString().replace(/:/g, '-') + ".zip";
     const directoryZipPath = path.join(directoryPath, lastDirectoryName);
     console.log(`${directoryZipPath}`)
 
@@ -541,7 +541,7 @@ async function deepMergeFromId() {
     "launches": idArray,
     "mergeType": "DEEP",
     "mode": "DEFAULT",
-    "name": deepMergeName + "_" + new Date().toISOString().replace(/:/g, '-'),
+    "name": deepMergeName,// + "_" + new Date().toISOString().replace(/:/g, '-'), // Let report portal append #1 , #2 in front of Launch Name
     "startTime": startDate
   }
   RestClient.request('POST', mergeEndpoint, postPayload, { headers: { 'Authorization': `bearer ${projectSpecificAPIToken}`, 'Accept': 'application/json' } }).then(response => {
