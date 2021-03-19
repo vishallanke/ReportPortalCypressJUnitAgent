@@ -40,17 +40,20 @@ Steps
 }
 ```
 
-2. Set below Environment Variables inside CI/CD
+2. Set below Environment Variables inside CI/CD. Below is just an example, you can change values as per your requirements
 ```
-export REPORTPORTAL_APIURL="https://report-portal-demo.com:443"
-export REPORTPORTAL_PROJECTNAME="DEMO"
-export REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME="MyProject"
+export REPORTPORTAL_APIURL="https://reporting.bt.com:443"
+export REPORTPORTAL_USERNAME="superadmin"
+export REPORTPORTAL_PASSWORD="erebus"
+export REPORTPORTAL_BASICAUTHKEY="Basic dWk6dWltYW4="
+export REPORTPORTAL_PROJECTNAME="PERSONAL"
+export REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME="Android"
 export REPORTPORTAL_JUNIT_RESULTS_DIR_PATH="../cypress/junitresults"
-export REPORTPORTAL_API_TOKEN="d04b49b4-76c0-472e-b89b-aa2398619fd7"
-export REPORTPORTAL_DEEPMERGE_NAME="MyProject"
-export REPORTPORTAL_DEEPMERGE_ATTRIBUTES="Environment#INT#Schedule#Nightly#Vertical#MyVertical#Project#E2ECrossVerticalQA"
-export REPORTPORTAL_DEEPMERGE="false
-EXPORT REPORTPORTAL_DEEPMERGE_DESCRIPTION="MyProject INT"
+export REPORTPORTAL_API_TOKEN="d04b43b4-abcd-123r-aj76-aa2398619fd8"
+export REPORTPORTAL_DEEPMERGE_NAME="PERSONAL"
+export REPORTPORTAL_DEEPMERGE_ATTRIBUTES="Environment#Platform-INT#Schedule#Nightly#PipelineId#50982#ProjectId#982456"
+export REPORTPORTAL_DEEPMERGE="false"
+export REPORTPORTAL_DEEPMERGE_DESCRIPTION="<a href=\"https://code.siemens.com/horizon/platform-tests/horizon-qa/-/pipelines/8335450\">Go to Pipeline</a><br/><a href=\"https://code.siemens.com/horizon/platform-tests/horizon-qa/-/pipelines/8335450\">Go to Job</a><br/>"
 
 ```
 
@@ -63,7 +66,8 @@ EXPORT REPORTPORTAL_DEEPMERGE_DESCRIPTION="MyProject INT"
 | 5 | REPORTPORTAL_JUNIT_RESULTS_DIR_PATH | Location where Cypress JUnit files will be stored. We assume that it is inside `Cypress/junitresults` directory. Then, please provide value of this as `../cypress/junitresults` |
 | 6 | REPORTPORTAL_DEEPMERGE_NAME | Report Portal Name of the Deep Merge |
 | 7 | REPORTPORTAL_DEEPMERGE_ATTRIBUTES | Specify attribute for Deep Merge. It has to be hash seperated. For example, Environment#INT#Schedule#Nightly#Vertical#AccountManager#Project#E2ECrossVerticalQA |
-| 8 | REPORTPORTAL_DEEPMERGE | Set value to true to perform deep merge. If you do not want to do deep merge, then set this flag to false |
+| 8 | REPORTPORTAL_DEEPMERGE | Set value to true to perform deep merge. If you do not want to do deep merge, then set this flag to false. However, we recommend doing deep merge so that you can set Tags |
+| 9 | REPORTPORTAL_DEEPMERGE_DESCRIPTION | For example, `<a href=\"https://code.abc.com/tests/qa/-/pipelines/8335450\">Go to Pipeline</a><br/><a href=\"https://code.abc.com/tests/qa/-/pipelines/8335450\">Go to Job</a><br/>` |
 
 
 >>>
@@ -172,4 +176,15 @@ for d in "${1}"/*; do
     cp -rf $2/$3 $1 || echo "Error Copying JUnit Report Portal Compatible XML Files"
 done
 echo "Report portal dynamic push data ended"
+```
+
+6. You can set  `export REPORTPORTAL_DEEPMERGE="true"` to perform deep merge. It help you to add tags for launches.
+For example,
+
+```
+    if [ "${deepMerge}" == "true" ]; then
+        pipeline="<a href=\"https://code.abc.com/horizon/tests/qa/-/pipelines/$CI_PIPELINE_ID\">Go to Pipeline</a><br/><a href=\"https://code.abc.com/tests/qa/-/jobs/$jobId\">Go to Job</a>"
+        eval "export REPORTPORTAL_DEEPMERGE=true" && eval "export REPORTPORTAL_DEEPMERGE_NAME=$junitDirName" && eval "export REPORTPORTAL_DEEPMERGE_DESCRIPTION=\"$pipeline\"" && eval "export REPORTPORTAL_DEEPMERGE_ATTRIBUTES=\"Environment#$4#Schedule#$5#VerticalName#$junitDirName#Products#Services#Vertical#CrossVertical#PipelineId#$CI_PIPELINE_ID#ProjectId#$CI_PROJECT_ID\"" && node reportportal.js
+    fi
+
 ```
