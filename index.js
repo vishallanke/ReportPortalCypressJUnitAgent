@@ -16,7 +16,7 @@ var parser = new xml2js.Parser({ explicitArray: false });
 var FOLDER = process.env.REPORTPORTAL_JUNIT_RESULTS_DIR_PATH
 // Need to change this in Future. Credentials will be removed in Future
 const directoryPath = path.join(__dirname, "..", FOLDER);
-var report_portal_host = `${process.env.REPORTPORTAL_APIURL}`
+var report_portal_host = `${process.env.REPORTPORTAL_API_URL}`
 var projectName = `${process.env.REPORTPORTAL_PROJECTNAME}`
 var projectSpecificAPIToken = `${process.env.REPORTPORTAL_API_TOKEN}`
 var username = `${process.env.REPORTPORTAL_USERNAME}`
