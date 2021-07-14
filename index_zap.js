@@ -153,7 +153,8 @@ function generateXml(fileNamesWithFullPath, done) {
                 childSuiteRequired = false
 
                 // Delete File as its not in valid format
-                console.log(`XML file does not contain testcase tag. Delete this file ${fullyQualifiedFilePath}`);
+                console.log(`XML file does not contain testcase tag. Return`);
+                return done(null)
                 fs.unlinkSync(fullyQualifiedFilePath);
                 if (!--pending) {
                   return done(null)
