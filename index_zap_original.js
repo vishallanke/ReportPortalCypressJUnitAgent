@@ -16,7 +16,7 @@ var parser = new xml2js.Parser({ explicitArray: false });
 var FOLDER = process.env.REPORTPORTAL_JUNIT_RESULTS_DIR_PATH
 // Need to change this in Future. Credentials will be removed in Future
 const directoryPath = path.join(__dirname, "..", FOLDER);
-var report_portal_host = `${process.env.REPORTPORTAL_API_URL}`
+var report_portal_host = `${process.env.REPORTPORTAL_APIURL}`
 var projectName = `${process.env.REPORTPORTAL_PROJECTNAME}`
 var projectSpecificAPIToken = `${process.env.REPORTPORTAL_API_TOKEN}`
 var username = `${process.env.REPORTPORTAL_USERNAME}`
@@ -132,6 +132,10 @@ function generateXml(fileNamesWithFullPath, done) {
                 levelOneTestSuiteAsFeature = json.testsuites.testsuite[1]
               }
 
+              console.log(`***** testsuites.length is ${json.testsuites.testsuite.length}`)
+              console.log(`***** testsuites.length is ${levelOneTestSuiteAsFeature}`)
+
+
               for (var i = 0; i < json.testsuites.testsuite.length; i++) {
                 try {
                   if (json.testsuites.testsuite[i].testcase.length > 0 || json.testsuites.testsuite[i].testcase.length == undefined) {
@@ -145,13 +149,18 @@ function generateXml(fileNamesWithFullPath, done) {
               // if updated xml does not contain test case, then delete the file
               console.log(`testsuites.length is ${testsuites.length}`)
               if (testsuites.length <= 0 || testsuites.length == undefined) {
-                console.log(`XML file does not contain testcase tag. Delete this file ${fullyQualifiedFilePath}`);
-                return done(null) //for ZAP
+                // Keep file as it is for OWSP ZAP Tests
+                childSuiteRequired = false
+
+                // Delete File as its not in valid format
+                console.log(`XML file does not contain testcase tag. Return`);
+                return done(null)
                 fs.unlinkSync(fullyQualifiedFilePath);
                 if (!--pending) {
                   return done(null)
                 }
-              } else {
+              }
+              else {
                 try {
                   if (childSuiteRequired) {
                     json.testsuites = rootTestSuite
@@ -176,16 +185,17 @@ function generateXml(fileNamesWithFullPath, done) {
                               -----  Test Cases
                   */
                   var xml;
-                  console.log(`XML is ${xml}`)
                   try {
                     var obj = { testsuite: { $: { name: process.env.REPORTPORTAL_JUNIT_APPLICATION_DIRECTORY_NAME }, json } };
                     var builder = new xml2js.Builder();
                     xml = builder.buildObject(obj);
                   } catch (err) {
-                    console.log(err)
+                    console.log(`Error in loading XML`)
+                    //console.log(err)
                   }
 
                   // Change for Test Suite throwing RangeError: Maximum call stack size exceeded because they are already compatible
+                  console.log(`******** NumberOfFiles ${fileNamesWithFullPath.length} Pending ${--pending} FileName ${fullyQualifiedFilePath} *********`)
                   if (xml == null || xml == undefined) {
                     if (!--pending) {
                       console.log(`Returning from writeFile ${fullyQualifiedFilePath}`)
@@ -195,14 +205,24 @@ function generateXml(fileNamesWithFullPath, done) {
 
                   // var builder = new xml2js.Builder();
                   // var xml = builder.buildObject(json);
-                  fs.writeFile(fullyQualifiedFilePath, xml, function (err, data) {
-                    if (err) console.log(err);
-                    console.log(`XML file successfully updated ${fullyQualifiedFilePath}`);
+                  if (xml != null || xml != undefined) {
+                    console.log(`Writing ${fullyQualifiedFilePath}`)
+                    fs.writeFile(fullyQualifiedFilePath, xml, function (err, data) {
+                      if (err) console.log(err);
+                      console.log(`XML file successfully updated ${fullyQualifiedFilePath}`);
+                      if (!--pending) {
+                        console.log(`Returning from writeFile ${fullyQualifiedFilePath}`)
+                        return done(null)
+                      }
+                    });
+                  }
+                  else {
+                    console.log(`File is already formatted. Skipping Writing ${fullyQualifiedFilePath}`)
                     if (!--pending) {
                       console.log(`Returning from writeFile ${fullyQualifiedFilePath}`)
                       return done(null)
                     }
-                  });
+                  }
                 } catch (err) {
                   console.log(`XML file updating error or file is already in correct format ${fullyQualifiedFilePath} ${err}`);
                   if (!--pending) {
@@ -274,7 +294,7 @@ function zipDirectory(directoryList, done) {
     if (!pending) return done(zipFiles);
     pending = directoryList.length;
 
-   var lastDirectoryName = `${path.basename(directoryNameWithPath, '.js')}` + "_" + new Date().toISOString().replace(/:/g, '-') + ".zip";
+    var lastDirectoryName = `${path.basename(directoryNameWithPath, '.js')}` + "_" + new Date().toISOString().replace(/:/g, '-') + ".zip";
     const directoryZipPath = path.join(directoryPath, lastDirectoryName);
     console.log(`${directoryZipPath}`)
 
