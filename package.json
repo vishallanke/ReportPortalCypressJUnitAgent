@@ -21,8 +21,8 @@
   "author": "Vishal",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.1",
-    "axios-retry": "^3.1.9",
+    "axios": "^0.24.0",
+    "axios-retry": "^3.2.4",
     "chai": "^4.2.0",
     "form-data": "^3.0.0",
     "fs": "0.0.1-security",
