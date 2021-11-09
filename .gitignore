@@ -105,4 +105,5 @@ dist
 
 # Project Specific
 env.sh
+env.local.sh
 cypress
